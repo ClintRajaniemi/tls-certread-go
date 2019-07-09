@@ -68,18 +68,6 @@ type extCert struct {
 	cert     x509.Certificate
 }
 
-/* func (e extCert) MarshalJSON() ([]byte, error) {
-	return json.Marshal(struct {
-		extCert
-		origHost string
-		origIP   string
-	}{
-		extCert:  extCert(e),
-		origHost: hostname,
-		origIP:   ip,
-	})
-} */
-
 // marshalJSON ...
 func marshalJSON(cert x509.Certificate, origHost string, origIP string) extCert {
 	var fullCert *extCert
