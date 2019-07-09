@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"log"
 	"os"
@@ -59,6 +60,34 @@ func tlsConnection(s string, config *tls.Config) (*tls.Conn, error) {
 	}
 
 	return conn, err
+}
+
+type extCert struct {
+	origHost string
+	origIP   string
+	cert     x509.Certificate
+}
+
+/* func (e extCert) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		extCert
+		origHost string
+		origIP   string
+	}{
+		extCert:  extCert(e),
+		origHost: hostname,
+		origIP:   ip,
+	})
+} */
+
+// marshalJSON ...
+func marshalJSON(cert x509.Certificate, origHost string, origIP string) extCert {
+	var fullCert *extCert
+	fullCert.origHost = origHost
+	fullCert.origIP = origIP
+	fullCert.cert = cert
+
+	return *fullCert
 }
 
 func main() {
